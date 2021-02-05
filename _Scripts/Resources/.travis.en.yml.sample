@@ -1,0 +1,110 @@
+#===========================================================
+# Hexos travis
+##    Ver: 1.0.0
+##   Date: 2020-10-24 23:32:00
+##   Docs: https://config.travis-ci.com/
+#===========================================================
+
+#--------------------------- Basic configuration ---------------------------#
+# Language
+language: node_js
+# Language version(node:latest stable version | lts/*:latest LTS version)
+node_js:
+  - node
+
+# Cache
+# Cache content that does not change frequently and speed up the construction.
+cache:
+    apt: true
+    npm: true
+    #Directory
+    directories:
+        - node_modules 
+
+# Environment variables
+env:
+ global:  
+   # - HEXOS_U_NAME: XXX
+   # - HEXOS_U_EMAIL: XXX@163.com
+   # - HEXOS_GITHUB_REF: github.com/XX/XX.github.io.git    
+   # - HEXOS_GITHUB_BRANCH: master
+   # - HEXOS_GITEE_REF: gitee.com/XX/XX.gitee.io.git
+   # - HEXOS_GITEE_BRANCH: master
+   # - HEXOS_CODING_REF: e.coding.net/XX/XX.coding.io.git
+   # - HEXOS_CODING_BRANCH: master
+   # - HEXOS_NOTICE_EMAIL: XXX@163.com
+   # - TZ: 'Asia/Shanghai'
+   # - HEXOS_WATCH_BRANCH: master
+
+# Branch monitoring
+# The branch to run the build.
+branches:
+  only:
+    #- ${HEXOS_WATCH_BRANCH}
+    - master
+
+#--------------------------- Before install ---------------------------#
+before_install:
+    - export TZ="${TZ}" #Change time zone
+    - export LESSCHARSET=utf-8
+
+
+#--------------------------- Install ---------------------------#
+install: 
+  # Script permissions
+  - chmod u+x Start
+  # Install dependence
+  - ./Start  install
+  # Patch
+  - ./Start  patch
+  
+
+#--------------------------- Script ---------------------------#
+script:
+  - hexo clean            #Clean
+  - hexo generate         #Generation
+
+#--------------------------- After script ---------------------------#
+after_script: 
+  #------------START: public handle ------------#
+  - cp -f .gitattributes  public/
+  - cd ./public && git init && git lfs install
+  - git config user.name "${HEXOS_U_NAME}"      # Configure name
+  - git config user.email "${HEXOS_U_EMAIL}"    # Configure email
+  - git config http.postBuffer  524288000       # Configure post buffer
+  - git config --global core.quotepath false
+  - git config --global i18n.commitencoding utf-8
+  - git config --global i18n.logoutputencoding utf-8
+  - git config --global gui.encoding utf-8
+  - git add .
+  - git commit -m "Travis CI build in `date +'%Y-%m-%d %H:%M'`"
+  #-------------END: public handle -------------#  
+    
+  #------------START: Push to remote repository ------------#  
+  # Github 
+  - git push --force --quiet "https://${HEXOS_GITHUB_TOKEN}@${HEXOS_GITHUB_REF}" master:${HEXOS_GITHUB_BRANCH}
+  
+  # Coding
+  #- git push --force --quiet "https://${HEXOS_CODING_PROJECT_USER}:${HEXOS_CODING_PROJECT_TOKEN}@${HEXOS_CODING_REF}" master:${HEXOS_CODING_BRANCH} 
+  
+  # Gitee
+  ##- rm -rf .git
+  ##- rm -f  .gitattributes
+  ##- git init
+  ##- git config user.name "${HEXOS_U_NAME}"      # Configure name
+  ##- git config user.email "${HEXOS_U_EMAIL}"    # Configure email
+  ##- git config http.postBuffer  524288000       # Configure post buffer
+  ##- git add .
+  ##- git commit -m "Travis CI build in `date +'%Y-%m-%d %H:%M'`"
+  #- git push --force --quiet "https://${HEXOS_GITEE_USER}:${HEXOS_GITEE_TOKEN}@${HEXOS_GITEE_REF}" master:${HEXOS_GITEE_BRANCH}
+  #-------------END: Push to remote repository -------------#
+
+  
+#--------------------------- Notification configuration ---------------------------#
+notifications:
+  email:
+    recipients:  
+      - ${HEXOS_NOTICE_EMAIL}
+    on_success: never
+    on_failure: always
+

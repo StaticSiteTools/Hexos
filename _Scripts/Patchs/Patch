@@ -1,0 +1,51 @@
+#!/bin/bash
+
+##########################################################
+# 	      	  
+# 补丁处理 	      	  
+# 复制 Package/ 目录下的所有到 / 目录下 	      	  
+# 	
+# 执行环境: Linux
+# 调用方式: ./  source  
+# 调用参数: 			 		 	  				  
+#     	     $1:   目标根目录(.../)
+#      	  
+# 原理:	      	  
+# 复制目录cc目录下的所有到Template目录下，目录结构如同cc内部
+# cp -rf Services/cc/*  Services/Template
+# 	      	  
+##########################################################
+# 脚本名称
+Patch_SCRIPT_NAME=${BASH_SOURCE[0]##*/}
+# 脚本所在目录
+# BASH_SOURCE[0]: 存储脚本的名称，如 funlist/a/bc.sh
+# 注: 只适用于bash shell，不会改变cd目录
+#     SCRIPT_DIR=$(cd $(dirname $0); pwd)  #不准确# $0不同方式调用结果不同
+## OK # ./XXX.sh 	  :  /mnt/f_DockerData/scripts
+## OK # source XXX.sh :  /mnt/f_DockerData/scripts
+## OK # bash XXX.sh	  :  /mnt/f_DockerData/scripts
+## NO # sh XXX.sh	  :  Error
+Patch_SCRIPT_DIR="$(cd $(dirname ${BASH_SOURCE[0]}); pwd)"
+
+# 跳转到脚本目录
+#[ "${App_toScriptDir}" == "1" ] && cd ${Patch_SCRIPT_DIR}
+
+
+#源根目录
+Source_RootDir="${Patch_SCRIPT_DIR}/Package"
+#目标根目录(.../)
+Target_RootDir="${1}"
+
+echo
+echo '------[Patch:Start]---------------------------------------------------------------------'
+if [ ${Target_RootDir} ]; then
+	# 复制文件
+	[ ! -d "${Target_RootDir}/" ]  &&  mkdir -p "${Target_RootDir}/"
+	#echo cp -rf "${Source_RootDir}/"*  "${Target_RootDir}"	
+	cp -rf "${Source_RootDir}/"*  "${Target_RootDir}"	
+else 
+	echo "Patch: Parameter cannot be empty"
+	exit 1
+fi
+echo '------[Patch:End]-----------------------------------------------------------------------'
+echo

@@ -1,0 +1,743 @@
+#===========================================================
+# Hexo Site Configuration
+##    Ver: 1.0.0
+##   Date: 2020-08-24 23:32:00
+##   Docs: https://hexo.io/docs/configuration.html
+## Source: https://github.com/hexojs/hexo/
+#===========================================================
+
+############## 网站配置(Site) ##############
+title: {AUTHOR}'s Blog
+subtitle: {AUTHOR}'s Blog, power by hexo
+description: ''
+keywords: 
+author: {AUTHOR}
+language: 
+  - en
+  - zh-CN
+timezone: ''
+
+############## 网址(URL) ##############
+## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
+url: http://yoursite.com/
+root: /
+#Permalink
+## See:https://hexo.io/zh-cn/docs/permalinks
+#permalink: :year/:month/:day/:title/  
+#permalink:  post/:category/:title/    
+#permalink:  post/:title/               #With auto_category plug-in. Do not use classification(:category)
+#permalink: posts/:abbrlink/            #abbrlink: hexo-abbrlink Plug-in variable
+permalink: :lang/posts/:abbrlink/      #abbrlink: hexo-abbrlink Plug-in variable
+permalink_defaults:
+  lang: en
+pretty_urls:
+  trailing_index: false # Set to false to remove trailing 'index.html' from permalinks
+  trailing_html: false  # Set to false to remove trailing '.html' from permalinks
+
+  
+#Unique link
+## Automatically create a unique link for each hexo post
+## Plugin: https://github.com/rozbo/hexo-abbrlink
+## The YAML data of MD files in source will be modified.
+## Format: abbrlink: 738503265
+##   If the abbrlink attribute does not exist in YAML, the value of abbrlink is generated based on the value of title
+##   If the abbrlink attribute exists in YAML, the value of the existing abbrlink is used(Changing title does not generate new values at this time.)
+##
+## There are two levels of settings：
+##    alg -- Algorithm (Currently, crc16 and crc32 are supported, and the default is crc16)
+##    rep -- Represent (The generated link can be represented by a hexadecimal<hex> or decimal<dec> value, which is dec by default)
+##
+## Example:
+## crc16 & hex
+## https://post.zz173.com/posts/66c8.html
+## crc16 & dec
+## https://post.zz173.com/posts/65535.html
+## crc32 & hex
+## https://post.zz173.com/posts/8ddf18fb.html
+## crc32 & dec
+## https://post.zz173.com/posts/1690090958.html
+## Maximum number of posts is 65535 for crc16. (For personal blog sites, this number is not bad)
+abbrlink:
+  alg: crc32  
+  rep: dec    
+  # Generate categories from directory-tree
+  # depth: the max_depth of directory-tree you want to generate, should > 0
+  # To regenerate categories, clear the abbrlink attribute in Front-matter.
+  # See: hexo-auto-category(https://github.com/xu-song/hexo-auto-category)
+  auto_category:
+     enable: true
+     depth: 5
+     over_write: true 
+  auto_title: false #enable auto title, it can auto fill the title by path
+  auto_date: false  #enable auto date, it can auto fill the date by time today
+  force: false      #enable force mode,in this mode, the plugin will ignore the cache, and calc the abbrlink for every post even it already had abbrlink.  
+  drafts: false     #Do you want to process the draft
+
+############## 目录(Directory) ##############
+source_dir: source
+public_dir: public
+tag_dir: tags
+archive_dir: archives
+category_dir: categories
+code_dir: downloads/code    #under source_dir
+i18n_dir: :lang
+skip_render: 
+  
+############## 文章(Writing) ##############
+new_post_name: :lang/:title.md #File name of new posts
+default_layout: post     #Default layout(post|page|draft) 
+titlecase: false         #Convert title to initial letter uppercase
+#Link settings
+external_link:
+  enable: true #Open external links in new tab
+  field: site  #Scope of entry into force(site:Site|post:Post)
+  exclude: ''  #Domain names to exclude
+filename_case: 0        #Transform filenames to 1 lower case; 2 upper case
+render_drafts: false    #Render drafts 
+post_asset_folder: true #Enable the Asset Folder
+relative_link: false    #Make links relative to the root folder 
+future: true            #Display future posts
+#Code settings
+highlight:
+  enable: true 
+  line_number: true    #Display line number
+  auto_detect: false   #Automatic detection code language
+  tab_replace: ''      #Tab replacement
+  wrap: true           #Wrap the code block in<table>
+  hljs: false          #Using hljs-* prefix for CSS classes
+prismjs:
+  enable: false
+  preprocess: true
+  line_number: true
+  tab_replace: ''
+
+
+############## 主页设置(Home page setting)  ##############
+#Hexo index generator
+## It generates an archive of posts on your homepage, according to the index or archive layout of your theme.
+## Plugin: https://github.com/hexojs/hexo-generator-index
+## Add `sticky: Num` in Front-matter,the bigger the number, the higher the top
+##     path: Root path for your blog's index page(Default: '')
+## per_page: Posts number displayed per page(0: disables pagination) 
+## order_by: Posts order(Default: date descending)
+## pagination_dir: Paging path(Default: 'page')
+index_generator:
+  path: ''
+  per_page: 4    #(invalid) value from per_page
+  order_by: -date
+
+############## 分类和标签(Category & Tag) ##############
+#Default category
+default_category: default
+#Category map
+## KEY: VALUE
+## KEY is the display name and VALUE is the URL path
+## In Front-matter, KEY can be used for Category, link will be converted to VALUE.
+## Tag is the same
+category_map:
+    Common: Common
+    Development: Dev
+    Personal: Per
+#Tag map
+tag_map:
+
+#Category generation
+## Note: it has been implemented by HEXO-abbrlink plug-in. The configuration here remains false
+## Automatically generate categories by folder path
+## Plugin: https://github.com/xu-song/hexo-auto-category
+##   depth: the max_depth of directory-tree you want to generate, should > 0
+auto_category:
+ enable: false
+ depth: 3
+
+
+############## 元数据元素(Metadata elements) ##############
+## When false, hexo does not insert meta tags in the header
+## See:https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta
+meta_generator: true
+
+############## 日期/时间格式(Date/Time format) ##############
+## Hexo uses Moment.js to parse and display date
+## You can customize the date format as defined in
+## http://momentjs.com/docs/#/displaying/format/
+date_format: YYYY-MM-DD
+time_format: HH:mm:ss
+## The update date of the article, unless set in Front-matter
+## mtime: Use file modification date 
+##  date: Use date as updated. 
+## empty: Simply drop updated 
+updated_option: 'mtime'
+
+
+############## 索引和分页(Index & Pagination) ##############
+## per_page: Number of articles per page(0: disable pagination)
+## pagination_dir: Pagination directory
+per_page: 10
+pagination_dir: page
+
+   
+############## 包含/排除文件(Include/Exclude file(s)) ############## 
+## include:/exclude: options only apply to the 'source/' folder
+include: 
+exclude: 
+ignore: 
+
+############## 部署(Deployment) ##############
+#Git deploy
+## Plugin: https://github.com/hexojs/hexo-deployer-git
+## Docs: https://hexo.io/zh-cn/docs/one-command-deployment
+## Working principle:
+## Generate site in .deploy_git directory and force push to Repo.
+## If .deploy_git does not exist, a Repo will be initialized(git init), otherwise the current Repo and its commit history will be used.
+## 
+## Delete .deploy_git directory:  `rm -rf  .deploy_git`
+##
+#[URL Type]
+#HTTPS: https://github.com/<user>/<project>.git
+#  SSH: git@github.com:<user>/<project>.git
+#[Single repository mode]
+#deploy:
+#  type: git
+#  repo: <repository url>
+#  branch: [branch]
+#  token: ''
+#  message: [message] #Default: "Site updated: {{ now('YYYY-MM-DD HH:mm:ss') }}"
+#  name: [git user]   #Commiter
+#  email: [git email] #Commiter's email
+#[Multiple repository mode]
+#deploy:
+#  type: git
+#  repo:
+#    [repo name]:
+#      url: <repository url>
+#      branch: [branch]
+#      ... ...
+#[Example]
+#deploy: 
+# type: git
+# repo: 
+#   Github1: 
+#     url: https://github.com/XXX/xx.git
+#     branch: master
+#     message: "Site updated: {{ now('YYYY-MM-DD HH:mm:ss') }}"
+#     name: XXX
+#     email: XXX@163.com
+#   Github2:
+#     url: https://github.com/YYY/yy.git
+#     branch: master
+#     message: Site updated:{{ now('YYYY-MM-DD HH:mm:ss') }}
+#     name: YYY
+#     email: YYY@163.com
+ #Search engine push. See: https://github.com/cjh0613/hexo-submit-urls-to-search-engine
+ #type: cjh_google_url_submitter
+ #type: cjh_bing_url_submitter
+ #type: cjh_baidu_url_submitter
+    
+############################ 扩展(Extensions) ############################ 
+## Plugins: https://hexo.io/plugins/
+##  Themes: https://hexo.io/themes/
+
+#Current theme
+#landscape | next
+theme: {THEME}
+
+#-------------- Admin --------------  
+#Hexo Admin GUI
+## Plugin: https://github.com/jaredly/hexo-admin
+## Visit: http://localhost:4000/admin/
+admin:
+  username: admin
+  #(admin) See: http://localhost:4000/admin/#/auth-setup
+  password_hash: $2a$10$LHKt8gyDQ34WoyLM.AMe2Oql5rd3GmRnfJERhG1SWmNu7gNVMK8RO
+  secret: kdsfjsdklfj
+#Custom post metadata
+#metadata:
+#  author_id: 
+#  language: 
+
+#-------------- Feed --------------
+## Generate Atom 1.0 or RSS 2.0 feed.
+## Plugin: https://github.com/hexojs/hexo-generator-feed
+feed: 
+  enable: true
+  #Type(atom | rss2 | ['atom', 'rss2'])
+  type: 
+    - atom
+    - rss2
+  #Path(must follow the order of type value)
+  path: 
+    - atom.xml
+    - rss2.xml
+  #Maximum number of posts in the feed 
+  limit: 20
+  hub: 
+  #(Optional)set to 'true' to include the contents of the entire post in the feed.
+  content: true
+  #(Optional)Default length of post content used in summary. Only used, if content setting is false and no custom post description present.
+  content_limit: 140
+  #(Optional) If content_limit is used to shorten post contents, only cut at the last occurrence of this delimiter before reaching the character limit. Not used by default.
+  content_limit_delim: ' '
+  #Order
+  order_by: -date
+  #(Optional)Custom feed icon.
+  icon:  
+  #Add feed autodiscovery.
+  autodiscovery: true
+  #Custom template path
+  template: 
+
+#-------------- JSON --------------
+#JSON content data
+## Generate a JSON file that contains the content of the article and page
+## Plugin: https://github.com/alexbruno/hexo-generator-json-content
+## By default, the JSON output includes meta, pages and posts sections. If only one of these sections is enabled by config, the json output will consist of a single array.
+jsonContent:
+  #File name
+  file: content.json
+  #Extracting keywords from extracts
+  keywords: 
+  #Date formats(See:https://momentjs.com/docs/#/displaying/format/)
+  #sets an output format for datetime objects date and updated.
+  dateFormat: 
+  #handle metadata
+  meta: true
+  #Processing drafts
+  drafts: false
+  #handle post
+  posts:
+    title: true
+    slug: true
+    date: true
+    updated: true
+    comments: true
+    path: true
+    link: true
+    permalink: true
+    excerpt: true
+    keywords: false   #Extracting keywords from extracts. Set false to ignore the keywords of the root node
+    text: true
+    raw: false        #Contains original MD content
+    content: true     #Contains full HTML content 
+    author: true
+    categories: true
+    tags: true  
+  #handle page
+  pages:
+    title: true
+    slug: true
+    date: true
+    updated: true
+    comments: true
+    path: true
+    link: true
+    permalink: true
+    excerpt: true
+    keywords: false
+    text: true
+    raw: false
+    content: true
+    author: true
+
+#Restful API
+## Plugin: https://github.com/yscoder/hexo-generator-restful
+## To generate restful style JSON data, you can use it as an API interface. See Plugin
+## Set the value to false to indicate no generation.
+restful:
+  #Output site configuration
+  #hexo.config mix theme.config 
+  #True or false, or array(selectively generates some attributes), such as
+  #site: ['title', 'subtitle', 'description', 'author', 'since', email', 'favicon', 'avatar']  
+  site: ['title', 'subtitle', 'description', 'author', 'since', email', 'favicon', 'keywords', 'language', 'timezone', 'theme']
+  #Article list pagination, 0 means no page.
+  posts_size: 10    
+  #Attributes to be generated in article list items
+  posts_props:      
+    title: true
+    slug: true
+    date: true
+    updated: true
+    comments: true
+    path: true
+    excerpt: true
+    cover: true            #Cover picture, extract the first picture of the article.
+    content: true
+    keywords: false
+    categories: true
+    tags: true
+  categories: true         #Category data
+  use_category_slug: false #Use slug for filename of category data
+  tags: true               #Tag data
+  use_tag_slug: false      #Use slug for filename of tag data
+  post: true               #Article data
+  #Additional hexo page data, such as  About
+  pages: true
+  #Exclude pages, such as lib
+  pages_exclude: 
+    - lib
+    - images
+    - Test
+    - css
+    - js
+
+
+#-------------- Search -------------- 
+#Search data generation
+## Plugin: https://github.com/wzpan/hexo-generator-search
+## Specific file exclusion: In Front-matter add  indexing: false
+search:
+  #Path. The file extension determines the output type(.json:JSON type| XML type)
+  path: search.json
+  #Search scope(post | page | all)
+  field: post
+  #Do you include all the contents of each article
+  content: true
+
+#-------------- SEO -------------- 
+#Site map  
+## Plugin: https://github.com/hexojs/hexo-generator-sitemap
+## Specific file exclusion: In Front-matter add  sitemap: false
+sitemap:
+  #Path
+  path: sitemap.xml
+  #Custom template
+  template: 
+  #Add rel-sitemap to the site's header.
+  rel: false
+  #Do you exclude Tags?
+  tags: true
+  #Do you exclude Categories?
+  categories: true
+
+#External links nofollow
+## Plugin: https://github.com/hexojs/hexo-filter-nofollow
+## Add nofollow attribute to all external links automatically.
+nofollow:
+  enable: true
+  #Scope of entry into force(site | post)
+  field: site
+  #Exclude host names(Wildcards cannot be used.)
+  exclude: 
+    #- 'exclude1.com'
+
+#Push new links to search engines
+## Plugin: https://github.com/cjh0613/hexo-submit-urls-to-search-engine
+## Some of the options below support environment variables(ENV)
+hexo_submit_urls_to_search_engine:
+  #Submitted condition(count | period)Now only supports count
+  submit_condition: count 
+  #Submit the latest N links
+  count: 10 
+  #Submit a link whose modification time is within the specified seconds
+  period: 900 
+  #Whether to submit to Google(0:No|1:Yes)
+  google: 0 
+  #Whether to submit to bing(0:No|1:Yes)
+  bing: 0 
+  #Whether to submit to baidu(0:No|1:Yes)
+  baidu: 0 
+  #File for storing push links
+  txt_path: submit_urls.txt
+  #Domain name registered in Baidu webmaster platform
+  baidu_host: https://XXX.github.io 
+  #Baidu secret key(do not publish the website source code in the public repository!) ENV: BAIDU_TOKEN
+  baidu_token:  
+  #Domain name registered in Bing webmaster platform
+  bing_host: https://XXX.github.io 
+  #bing secret key(do not publish the website source code in the public repository!) ENV: BING_TOKEN
+  bing_token: 
+  #Domain name registered in Google webmaster platform
+  google_host: https://XXX.github.io 
+  #The JSON file for storing Google key should be located in the root directory of the website(do not publish the website source code in the public repository!)
+  google_key_file: Project.json 
+  #Replace part of the string in the link(0:No|1:Yes)
+  replace: 0  
+  find_what: http://xxx.github.io/blog
+  replace_with: https://xxx.com
+
+
+#-------------- Optimization --------------  
+#Lazy loading image
+## Plugin: https://github.com/Troy-Yang/hexo-lazyload-image
+lazyload:
+  enable: true
+  #(Optional)Handle post 
+  #If true, only the images from post or page will support lazy-load.
+  #If false, the whole images of your site will use lazy-load, including the images dist from your theme, but not including the background images from CSS style.
+  onlypost: true
+  #(Optional)Image of the loading process. Such as ./images/loading.gif
+  loadingImg: 
+  #(Optional)Compatible with spa page
+  #If true, searching for each image during scrolling to support SPA page
+  #If false(default), the performance would be the best.
+  isSPA: true
+
+#Optimizes HTML, CSS, JS and images
+## Plugin: https://github.com/chenzhutian/hexo-all-minifier
+#Enable all optimizations
+#all_minifier: false
+#js bundle
+js_concator:
+  enable: false
+  #The output path of the bundle script. It will be set as absolute path to the root dir.
+  bundle_path: '/js/bundle.js'
+  #Put the bundle script in the front of all scripts in body tag. 
+  front: false
+  #Whether to disable log output.
+  silent: false
+#Optimizes HTML
+html_minifier:
+  enable: false
+  #Ignore the error occurred on parsing html.
+  ignore_error: true
+  #Whether to disable log output.
+  silent: false
+  #Exclude files
+  exclude: 
+
+#Optimizes CSS
+css_minifier:
+  enable: true
+  #Whether to disable log output.
+  silent: false
+  #Exclude files
+  exclude: 
+    - '*.min.css'
+#Optimizes JS
+js_minifier:
+  enable: true
+  #Mangle file names
+  mangle: false
+  #Whether to disable log output.
+  silent: false
+  #Output. If empty, comment or set to null
+  #output:
+  #Compress. If empty, comment or set to null
+  #compress:
+  #Exclude files
+  exclude: 
+    - '*.min.js'	
+#Optimizes Images(Bug: Error: '"Z:\...\node_modules\gifsicle\vendor\gifsicle.exe"' )
+image_minifier:
+  enable: false
+  #Interlace gif for progressive rendering.
+  interlaced: false
+  #Optimize svg multiple times until it’s fully optimized. 
+  multipass: false
+  #Optimization Level(0~7)
+  optimizationLevel: 2
+  #Enable imagemin-pngquant plugin. See:https://github.com/imagemin/imagemin-pngquant
+  pngquant: false
+  #Lossless conversion to progressive.  
+  progressive: true
+  #Whether to disable log output.
+  silent: false
+  #Exclude specific types of image files(gif，jpg，png，svg). Default to null. Glob is not support.
+  exclude:  
+
+
+#-------------- Word count setting --------------  
+#Character statistics and reading time
+## Plugin: https://github.com/theme-next/hexo-symbols-count-time
+symbols_count_time:
+  symbols: true
+  time: true
+  #Total number of characters
+  total_symbols: true
+  #Total reading time
+  total_time: true
+  #Exclude code block
+  exclude_codeblock: true
+  #Average word length(The number of characters in a word). CN ~ 2; EN ~ 5; RU ~ 6
+  awl: 2
+  #Words per minute. Slow~200;Normal~275;Fast~350
+  wpm: 300
+  #If time to read less then 60 minutes, added suffix as string parameter.
+  suffix: "mins."
+
+#-------------- Read more --------------  
+#Articles excerpts 
+## Plugin: https://github.com/chekun/hexo-excerpt
+excerpt:
+  # Depth: Specifies the size of the extract (the number of non blank lines).
+  depth: 3
+  # Extract exclusion(css selectors )
+  excerpt_excludes: []
+  more_excludes: []
+  # true : Don't show excerpts from short posts
+  hideWholePostExcerpts: false
+
+
+#-------------- Images and tables --------------
+
+
+#-------------- Video and audio --------------
+#Video
+## Plugin: https://github.com/m80126colin/hexo-tag-owl
+## Embed various video and image sources into the article.
+## Markdown Syntax:
+##    See: doc/Use.md
+owl:
+  #CSS Type(default:lib/asset/css.styl|custom:file|none)
+  css: default
+  #CSS File(default:lib/asset/css.styl Output to this file|custom:Provide this file)
+  file: css/owl.css
+
+
+#Audio
+## Plugin: https://github.com/MoePlayer/hexo-tag-aplayer
+## Markdown Syntax:
+##    See: doc/Use.md
+aplayer:
+  # Script asset path in Public directory, default: 'assets/js'
+  script_dir: js
+  # Style asset path in Public directory, default: 'assets/css'
+  style_dir: css
+  # External APlayer.js url (CDN)(Default not enabled)
+  #cdn: https://unpkg.com/browse/aplayer@1.10.1/dist/APlayer.min.js
+  #cdn: https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.js
+  #cdn: https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js
+  # External APlayer.css url (CDN)(Default not enabled)
+  #style_cdn: https://unpkg.com/browse/aplayer@1.10.1/dist/APlayer.min.css
+  #style_cdn: https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.css
+  #style_cdn: https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css
+  # Meting support
+  meting: true                                  
+  # Meting API url. Such as http://xxx/api.php 
+  meting_api:                
+  # External Meting.js url (CDN)(Default not enabled)
+  #meting_cdn: https://unpkg.com/meting@2.0.1/dist/Meting.min.js
+  #meting_cdn: https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js
+  # Automatic injection Aplayer.js and Meting.js
+  asset_inject: true                            
+  # Old version parameters,same as CDN
+  #externalLink: http://xxx/aplayer.min.js       
+
+
+#-------------- Content integration --------------
+#bilibili Page
+## Plugin: https://github.com/HCLonely/hexo-bilibili-bangumi
+## Add bilibili bangumi page(Personal information)
+## The following commands are used before `hexo generate` or `hexo deploy`
+## Update data: `hexo bangumi -u`
+## Delete data: `hexo bangumi -d`
+## Note: you need to set the tracking list to public in bilibili
+bangumi:
+  enable: false
+  #Bangumi page path, default: bangumis/index.html 
+  path: bangumis/index.html
+  #User ID
+  vmid: 
+  #Page title
+  title: '追番列表'
+  #Page quote, support HTML syntax
+  quote: '生命不息，追番不止！'
+  #Initial display page(0:想看 | 1:在看<Default> | 2:看过)
+  show: 1
+  #Picture before loading.
+  loading: 
+  #meta(Introduction above) font color
+  metaColor: "#00a1d6"
+  #Introduction font color
+  color: "#4c4948"
+  #The cover of bangumi uses webp format
+  webp: true
+
+
+#-------------- Render engine --------------
+#Render engine: hexo-renderer-markdown-it
+## Plugin: https://github.com/hexojs/hexo-renderer-markdown-it
+## Doc: https://github.com/celsomiranda/hexo-renderer-markdown-it/wiki/ 
+## Faster than the default render hexo-renderer-marked
+##   
+#markdown: 'zero'        #Only italics and bold are supported and most features are disabled
+#markdown: 'default'     #Make the parser behave like the GitHub specification.
+#markdown: 'commonmark'  #Make the parser use the CommonMark specification.
+markdown:
+  #Render
+  render:
+    html: true           #Should HTML content in the source be escaped(true:No escape|false:Escape)
+    xhtmlOut: true       #Whether the parser will export fully XHTML compatible tags. This only needs to be true for complete CommonMark support.
+    breaks: false        #Whether to resolve the newline character in the source file as <br> tag. false, the default double line break creation paragraph is still supported
+    linkify: true        #Convert URL text to link
+    typographer: true    #Whether to replace common typesetting elements, such as quotation marks, dashes, etc.
+    quotes: '“”‘’'       #Define double and single quotation marks to use,Replace with these quotes when the typographer is true
+  #Plugins
+  plugins:
+    - markdown-it-abbr
+    - markdown-it-footnote
+    - markdown-it-ins
+    - markdown-it-sub
+    - markdown-it-sup
+  #Anchors
+  anchors:
+    #Minimum level for ID creation. (Ex. h2 to h6)
+    level: 2
+    #A suffix that is prepended to the number given if the ID is repeated.(title-2 => title-v2)
+    collisionSuffix: 'v'
+    #If `true`, creates an anchor tag with a permalink besides the heading.
+    permalink: true
+    #Class used for the permalink anchor tag.
+    permalinkClass: 'header-anchor'
+    #Location of permalink(right|left)
+    permalinkSide: 'right'
+    #The symbol used to make the permalink. '¶'
+    permalinkSymbol: '#'
+    #Transform anchor(1:lower case|2:upper case)
+    case: 0
+    #Replace space with a character
+    separator: ''
+
+
+#-------------- Flowchart support --------------
+## Markdown flowchart supports syntax of Gantt, mermaid, flow, plantUML, etc
+## By default, hexo is unable to render these flowcharts, and the corresponding plug-ins need to be installed.
+
+#flowchart
+## Plugin: https://github.com/bubkoo/hexo-filter-flowchart
+## Markdown example:
+##   See: doc/Use.md
+flowchart:
+  #raphael:    #Optional, custom raphael.js
+  #flowchart:  #Optional, custom flowchart.js
+  options:     #Options for `drawSVG` 
+    scale: 1
+    line-width: 2
+    line-length: 50
+    text-margin: 10
+    font-size: 12
+
+#UML diagram: Sequence
+## Plugin: https://github.com/bubkoo/hexo-filter-sequence
+## Markdown example:
+##   See: doc/Use.md
+sequence:
+  #webfont:     #Optional, custom webfontloader.js
+  #snap:        #Optional, custom snap.svg.js
+  #underscore:  #Optional, custom underscore.js
+  #sequence:    #Optional, custom sequence-diagram.js
+  #css:         #optional, the url for css, such as hand drawn theme 
+  options: 
+    theme: 
+    css_class: 
+
+
+#-------------- Tooltip --------------
+#Footnotes
+## Plugin: https://github.com/kchen0x/hexo-reference
+## support markdown footnotes and Wiki-Style tooltip 
+## Markdown Syntax:
+##   See: doc/Use.md
+
+#-------------- Mathematical formula support --------------
+
+
+#-------------- Other --------------    
+#Article top
+## Add `top: Num` in Front-matter, and the larger the number, the higher the top
+## Plugin: https://github.com/amlove2/hexo-generator-topindex
+## per_page: Posts number displayed per page(0: disables pagination) 
+## order_by: Posts order(Default: date descending)
+topindex_generator:
+  per_page: 8    #Effective on home page
+  order_by: -date
+

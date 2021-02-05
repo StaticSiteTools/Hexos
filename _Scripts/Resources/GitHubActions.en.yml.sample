@@ -1,0 +1,109 @@
+#===========================================================
+# Hexos Actions
+##    Ver: 1.0.0
+##   Date: 2020-11-20 10:24:48
+##   Docs: https://docs.github.com/en/free-pro-team@latest/actions
+#===========================================================
+name: Hexos CI/CD
+
+# Trigger condition: after the push to the master branch
+on:
+  push:
+    branches: 
+      - master
+
+# Environment variables
+env:
+  TZ: Asia/Shanghai
+  HEXOS_U_NAME: XXX
+  HEXOS_U_EMAIL: XXX@163.com
+  HEXOS_GITHUB_REF: github.com/XX/XX.github.io.git    
+  HEXOS_GITHUB_BRANCH: master
+  HEXOS_GITEE_REF: gitee.com/XX/XX.gitee.io.git
+  HEXOS_GITEE_BRANCH: master
+  HEXOS_CODING_REF: e.coding.net/XX/XX.coding.io.git
+  HEXOS_CODING_BRANCH: master
+  #HEXOS_NOTICE_EMAIL: XXX@163.com  
+  #HEXOS_WATCH_BRANCH: master
+
+jobs:
+  Hexos-cicd:
+    name: Hexos build and deploy
+    runs-on: ubuntu-latest 
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+      with:
+        #Do you want to download Git-LFS files?(true|false)
+        lfs: 'true'
+        #Check out sub module(true:Check out|recursive:Recursive check out)
+        submodules: 'true'
+
+    - name: Install Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+
+      # Set the package cache directory to avoid each download
+    - name: Cache Node.js module
+      uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+      # Download hexo-cli and related installation packages
+    - name: Install Hexo
+      run: |
+        npm install -g hexo-cli
+        chmod u+x Start
+        ./Start  install
+        ./Start  patch
+
+      # Compile markdown file
+    - name: Generate file
+      run: |
+        hexo clean
+        hexo generate
+
+
+      # <Public> repository preprocessing
+    - name: Initialize the Public repository  
+      run: |        
+        cp -f .gitattributes  public/
+        cd ./public && git init && git lfs install
+        git config lfs.allowincompletepush true
+        git config user.name "${HEXOS_U_NAME}"
+        git config user.email "${HEXOS_U_EMAIL}"
+        git config http.postBuffer  524288000
+        git add .
+        git commit -m "GitHub Actions auto build at `date +"%Y-%m-%d %H:%M"`"
+
+      # Push the compiled file to the specified repository
+    - name: Deploy Hexos to GITHUB
+      continue-on-error: true
+      run: |  
+        cd ./public
+        git push --force --quiet "https://${{ secrets.HEXOS_GITHUB_TOKEN }}@${HEXOS_GITHUB_REF}" master:${HEXOS_GITHUB_BRANCH}
+#     - name: Deploy Hexos to CODING
+#       continue-on-error: true
+#       run: |  
+#         cd ./public
+#         git push --force --quiet "https://${{ secrets.HEXOS_CODING_PROJECT_USER }}:${{ secrets.HEXOS_CODING_PROJECT_TOKEN }}@${HEXOS_CODING_REF}" master:${HEXOS_CODING_BRANCH}  
+#     - name: Deploy Hexos to GITEE
+#       continue-on-error: true
+#       run: |  
+##         rm -rf public/.git
+##         rm -f public/.gitattributes
+##         git init public/
+##         git config -f public/.git/config  user.name "${HEXOS_U_NAME}"
+##         git config -f public/.git/config  user.email "${HEXOS_U_EMAIL}"
+##         git config -f public/.git/config  http.postBuffer  524288000
+##         ( cd ./public && git add . && git commit -m "GitHub Actions auto build at `date +"%Y-%m-%d %H:%M"`" )
+#         cd ./public
+#         git push --force --quiet "https://${{ secrets.HEXOS_GITEE_USER }}:${{ secrets.HEXOS_GITEE_TOKEN }}@${HEXOS_GITEE_REF}" master:${HEXOS_GITEE_BRANCH}
+      
+        
+        

@@ -1,0 +1,173 @@
+#!/bin/bash
+#=================================================#
+# npm模块安装
+#
+#
+#=================================================#
+
+################################[升级依赖项]################################
+npm install jsprim@^2 --save
+npm install ejs --save
+npm install core-js --save
+npm install gifsicle  --save --ignore-scripts
+
+npm install hexo@^5 --save
+npm install hexo-server@^2 --save
+npm install hexo-generator-index@^2 --save
+# npm install hexo@^4.2.1 --save
+# npm install hexo-server@^1.0.0 --save
+# npm install hexo-generator-index@^1.0.0 --save
+
+
+################################[安装:Hexo模块]################################
+#文章摘录 : https://github.com/chekun/hexo-excerpt
+npm install hexo-excerpt --save
+
+#Git部署 : https://github.com/hexojs/hexo-deployer-git
+npm install hexo-deployer-git --save
+
+#Feed : https://github.com/hexojs/hexo-generator-feed
+npm install hexo-generator-feed --save
+
+#搜索数据生成 : https://github.com/wzpan/hexo-generator-search
+npm install hexo-generator-search --save
+
+#站点地图 : https://github.com/hexojs/hexo-generator-sitemap
+npm install hexo-generator-sitemap --save
+
+#JSON内容数据 : https://github.com/alexbruno/hexo-generator-json-content
+npm install hexo-generator-json-content --save
+
+#Restful API : https://github.com/yscoder/hexo-generator-restful
+npm install hexo-generator-restful --save
+
+#外部链接nofollow : https://github.com/hexojs/hexo-filter-nofollow
+npm install hexo-filter-nofollow --save
+
+#字符统计和阅读时间 : https://github.com/theme-next/hexo-symbols-count-time
+npm install hexo-symbols-count-time --save
+
+#Hexo的管理界面 : https://github.com/jaredly/hexo-admin
+#-----------依赖-----------#
+#bcrypt-nodejs不再被主动维护,请使用bcrypt或bcryptjs。
+npm install  bcryptjs  --save
+#请更新到minimatch 3.0.2或更高版本，以避免RegExp DoS问题
+npm install  minimatch  --save
+#不推荐使用connect 2.x系列
+npm install  connect  --save 
+#Chokidar 2将在node v14+上中断。升级到 chokidar 3，减少15x的依赖性。
+npm install  chokidar  --save
+#fsevents 1将在node v14+上中断，可能正在使用不安全的二进制文件。升级至fsevents 2。
+# MacOS平台适用，其它平台和架构无法安装
+# npm install  fsevents  --save
+#这个模块移到了@hapi/hawk。请确保切换，因为此分发不再受支持，并且可能包含错误和关键安全问题。
+npm install  @hapi/hawk  --save
+#此版本已被弃用. 请升级到最新版本以获取最佳功能、错误修复和安全修补程序。
+npm install  hoek  --save
+#此版本已被弃用. 请升级到最新版本以获取最佳功能、错误修复和安全修补程序。
+npm install  cryptiles  --save
+#此模块移到@hapi/sntp。请确保切换，因为此分发不再受支持，并且可能包含错误和关键安全问题。
+npm install  @hapi/sntp  --save
+#此版本已被弃用. 请升级到最新版本以获取最佳功能、错误修复和安全修补程序。
+npm install  boom  --save
+#-----------安装-----------#
+npm install  hexo-admin  --save 
+
+#自动生成类别 : https://github.com/xu-song/hexo-auto-category
+npm install hexo-auto-category --save
+
+#唯一链接 : https://github.com/rozbo/hexo-abbrlink
+npm install hexo-abbrlink --save
+
+#视频 : https://github.com/m80126colin/hexo-tag-owl
+npm install hexo-tag-owl --save
+
+#博文置顶 : https://github.com/amlove2/hexo-generator-topindex
+#-----------依赖-----------#
+npm install object-assign --save
+#-----------安装-----------#
+npm install hexo-generator-topindex --save
+
+#代码演示 : https://github.com/laomao800/hexo-tag-demo
+npm install hexo-tag-demo --save
+
+#内容块  : https://github.com/lxl80/hexo-admonition
+npm install hexo-admonition --save
+
+#信息卡片 : https://github.com/toastsgithub/hexo-valkyr-url
+npm install hexo-valkyr-url --save
+
+#Github信息卡片 : https://github.com/Gisonrg/hexo-github-card
+npm install hexo-github-card --save
+
+#bilibili页面 : https://github.com/HCLonely/hexo-bilibili-bangumi
+npm install hexo-bilibili-bangumi --save
+
+#工具提示 : https://github.com/kchen0x/hexo-reference
+npm install hexo-reference --save
+
+#流程图flowchart : https://github.com/bubkoo/hexo-filter-flowchart
+npm install hexo-filter-flowchart --save
+
+#UML图sequence : https://github.com/bubkoo/hexo-filter-sequence
+npm install hexo-filter-sequence --save
+
+#渲染引擎hexo-renderer-markdown-it : https://github.com/hexojs/hexo-renderer-markdown-it
+npm uninstall hexo-renderer-marked --save
+npm install hexo-renderer-markdown-it --save
+
+#懒加载图像 : https://github.com/Troy-Yang/hexo-lazyload-image
+npm install hexo-lazyload-image --save
+
+#优化HTML，CSS，JS和images : https://github.com/chenzhutian/hexo-all-minifier
+#-----------依赖-----------#
+npm install imagemin-gifsicle  --save --ignore-scripts
+#-----------安装-----------#
+npm install hexo-all-minifier --save --ignore-scripts
+
+#推送新链接至搜索引擎 : https://github.com/cjh0613/hexo-submit-urls-to-search-engine
+npm install hexo-submit-urls-to-search-engine --save
+
+#二维码生成 : https://github.com/jsweibo/hexo-tag-qrcode
+npm install hexo-tag-qrcode --save
+
+#音频 : https://github.com/MoePlayer/hexo-tag-aplayer
+npm install hexo-tag-aplayer --save
+
+
+
+
+#流程图mermaid : https://github.com/webappdevelp/hexo-filter-mermaid-diagrams
+#npm install hexo-filter-mermaid-diagrams --save  #需要修改主题模版
+
+#嵌入式PDF : https://github.com/superalsrk/hexo-pdf
+#npm install  hexo-pdf  --save  #某些主题中已内置,有冲突
+
+#全局许可证 : https://github.com/sbanwart/hexo-global-license
+#npm install  hexo-global-license  --save   #某些主题中已内置
+
+#本地文件内容包含 : https://github.com/pirtleshell/hexo-include
+#npm uninstall  hexo-include  --save --only=prod  #命令冲突且结果非预期
+
+#照片墙 : https://github.com/lzane/hexo-light-gallery
+#npm install hexo-light-gallery --save  #有冲突，hexo-all-minifier
+
+
+################################[安装:Hexo.Next模块]################################
+#搜索数据生成 : https://github.com/theme-next/hexo-generator-searchdb
+npm install hexo-generator-searchdb  --save 
+
+#相关帖子和热门帖子 : https://github.com/tea3/hexo-related-popular-posts
+# hexo v3.2或更高版本	2.0.6
+# hexo v5.0之前的版本	4.0.0
+# hexo v5.0之后的版本	5.0.0
+#npm install hexo-related-popular-posts --save
+npm install hexo-related-popular-posts@^5 --save
+
+
+
+#leancloud访客计数器修复 : https://github.com/theme-next/hexo-leancloud-counter-security
+#npm install hexo-leancloud-counter-security  --save 
+
+
+

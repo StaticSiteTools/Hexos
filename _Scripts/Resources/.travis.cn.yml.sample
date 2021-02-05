@@ -1,0 +1,110 @@
+#===========================================================
+# Hexos travis
+##    Ver: 1.0.0
+##   Date: 2020-10-24 23:32:00
+##   Docs: https://config.travis-ci.com/
+#===========================================================
+
+#--------------------------- 基础配置 ---------------------------#
+# 语言
+language: node_js
+# 语言版本(node:最新稳定版 | lts/*:最新LTS版本)
+node_js:
+  - node
+
+# 缓存
+# 缓存不经常更改的内容，加快构建速度。
+cache:
+    apt: true
+    npm: true
+    #目录
+    directories:
+        - node_modules 
+
+# 环境变量
+env:
+ global:  
+   # - HEXOS_U_NAME: XXX
+   # - HEXOS_U_EMAIL: XXX@163.com
+   # - HEXOS_GITHUB_REF: github.com/XX/XX.github.io.git    
+   # - HEXOS_GITHUB_BRANCH: master
+   # - HEXOS_GITEE_REF: gitee.com/XX/XX.gitee.io.git
+   # - HEXOS_GITEE_BRANCH: master
+   # - HEXOS_CODING_REF: e.coding.net/XX/XX.coding.io.git
+   # - HEXOS_CODING_BRANCH: master
+   # - HEXOS_NOTICE_EMAIL: XXX@163.com
+   # - TZ: 'Asia/Shanghai'
+   # - HEXOS_WATCH_BRANCH: master
+
+# 分支监控
+# 要运行您的构建的分支。
+branches:
+  only:
+    #- ${HEXOS_WATCH_BRANCH}
+    - master
+
+#--------------------------- 在安装之前 ---------------------------#
+before_install:
+    - export TZ="${TZ}" #更改时区
+    - export LESSCHARSET=utf-8
+
+
+#--------------------------- 安装 ---------------------------#
+install: 
+  # 脚本权限
+  - chmod u+x Start
+  # 安装依赖
+  - ./Start  install
+  # 补丁
+  - ./Start  patch
+  
+
+#--------------------------- 脚本 ---------------------------#
+script:
+  - hexo clean            #清除
+  - hexo generate         #生成
+
+#--------------------------- 在脚本之后 ---------------------------#
+after_script: 
+  #------------START: public处理 ------------#
+  - cp -f .gitattributes  public/
+  - cd ./public && git init && git lfs install
+  - git config user.name "${HEXOS_U_NAME}"      # 配置name
+  - git config user.email "${HEXOS_U_EMAIL}"    # 配置email
+  - git config http.postBuffer  524288000       # 配置提交缓存
+  - git config --global core.quotepath false
+  - git config --global i18n.commitencoding utf-8
+  - git config --global i18n.logoutputencoding utf-8
+  - git config --global gui.encoding utf-8
+  - git add .
+  - git commit -m "Travis CI 自动构建在 `date +'%Y-%m-%d %H:%M'`"
+  #-------------END: public处理 -------------#  
+    
+  #------------START: 推送至远端仓库 ------------#  
+  # Github 
+  - git push --force --quiet "https://${HEXOS_GITHUB_TOKEN}@${HEXOS_GITHUB_REF}" master:${HEXOS_GITHUB_BRANCH}
+  
+  # Coding
+  #- git push --force --quiet "https://${HEXOS_CODING_PROJECT_USER}:${HEXOS_CODING_PROJECT_TOKEN}@${HEXOS_CODING_REF}" master:${HEXOS_CODING_BRANCH}  
+  
+  # Gitee
+  ##- rm -rf .git
+  ##- rm -f  .gitattributes
+  ##- git init
+  ##- git config user.name "${HEXOS_U_NAME}"      # 配置name
+  ##- git config user.email "${HEXOS_U_EMAIL}"    # 配置email
+  ##- git config http.postBuffer  524288000       # 配置提交缓存
+  ##- git add .
+  ##- git commit -m "Travis CI 自动构建在 `date +'%Y-%m-%d %H:%M'`"
+  #- git push --force --quiet "https://${HEXOS_GITEE_USER}:${HEXOS_GITEE_TOKEN}@${HEXOS_GITEE_REF}" master:${HEXOS_GITEE_BRANCH}
+  #-------------END: 推送至远端仓库 -------------#
+
+  
+#--------------------------- 通知配置 ---------------------------#
+notifications:
+  email:
+    recipients:  
+      - ${HEXOS_NOTICE_EMAIL}
+    on_success: never
+    on_failure: always
+

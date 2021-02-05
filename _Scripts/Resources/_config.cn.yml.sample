@@ -1,0 +1,743 @@
+#===========================================================
+# Hexo 站点配置文件
+##    Ver: 1.0.0
+##   Date: 2020-08-24 23:32:00
+##   Docs: https://hexo.io/docs/configuration.html
+## Source: https://github.com/hexojs/hexo/
+#===========================================================
+
+############## 网站配置(Site) ##############
+title: {AUTHOR}'s Blog
+subtitle: {AUTHOR}的博客，Hexo强力驱动
+description: 爱分享，爱技术，爱生活。
+keywords:  Html,Javascript,CSS,PHP
+author: {AUTHOR}
+language: 
+  - zh-CN
+  - en
+timezone: Asia/Shanghai
+
+############## 网址(URL) ##############
+## 如果你的站点要放入子目录, 请将url设置为'http://yoursite.com/child' 并将根目录设置为'/child/' 
+url: http://yoursite.com/
+root: /
+#永久链接
+## See:https://hexo.io/zh-cn/docs/permalinks
+#permalink: :year/:month/:day/:title/  
+#permalink:  post/:category/:title/    
+#permalink:  post/:title/         #配合auto_category插件，不使用分类(:category)
+#permalink: posts/:abbrlink/      #abbrlink: hexo-abbrlink插件变量
+permalink: :lang/posts/:abbrlink/      #abbrlink: hexo-abbrlink插件变量
+permalink_defaults:
+  lang: zh-CN
+pretty_urls:
+  trailing_index: false #设置为false以从永久链接中删除尾部的 'index.html'
+  trailing_html: false  #设置为false以从永久链接中删除尾部的 '.html'
+
+  
+#唯一链接
+## 为hexo的每个帖子自动创建一个且唯一的链接
+## Plugin: https://github.com/rozbo/hexo-abbrlink
+## 会修改source中md文件的YAML数据
+## 格式： abbrlink: 738503265
+##   如果YAML中abbrlink属性不存在，则根据title的值来生成abbrlink的值
+##   如果YAML中abbrlink属性存在，则使用已存在的abbrlink的值(此时更改title也不会产生新的值)
+##
+## 有两级设置：
+##    alg -- Algorithm (目前支持 crc16 和 crc32 ，默认为crc16)
+##    rep -- Represent (生成的链接可以用十六进制<hex>或十进制<dec>值表示，默认为dec)
+##
+## 示例：
+## crc16 & hex
+## https://post.zz173.com/posts/66c8.html
+## crc16 & dec
+## https://post.zz173.com/posts/65535.html
+## crc32 & hex
+## https://post.zz173.com/posts/8ddf18fb.html
+## crc32 & dec
+## https://post.zz173.com/posts/1690090958.html
+## crc16的最大帖子数为65535(对于个人博客网站，这个数字还算不错)
+abbrlink:
+  alg: crc32  
+  rep: dec    
+  # 按文件夹名称自动生成类别
+  # depth: 你想生成目录树的深度，应 > 0 
+  # 若要重新生成类别，请清除abbrlink属性在front-matter中 
+  # 参考：HEXO-自动分类(https://github.com/xu-song/hexo-auto-category)
+  auto_category:
+     enable: true
+     depth: 5
+     over_write: true 
+  auto_title: false #启用自动标题，可以按路径自动填充标题
+  auto_date: false  #启用自动日期，它可以按今天的时间自动填充日期
+  force: false      #启用强制模式，在这种模式下，插件将忽略缓存，并计算每个帖子的abbrlink，即使它已经有了abbrlink。  
+  drafts: false     #是否对草稿处理
+
+############## 目录(Directory) ##############
+source_dir: source
+public_dir: public
+tag_dir: tags
+archive_dir: archives
+category_dir: categories
+code_dir: downloads/code    #source_dir下的子目录
+i18n_dir: :lang
+skip_render: 
+  
+############## 文章(Writing) ##############
+new_post_name: :lang/:title.md #新建文章的文件名
+default_layout: post     #默认布局(post|page|draft) 
+titlecase: false         #转换标题为首字母大写
+#链接设置
+external_link:
+  enable: true #在新选项卡中打开外部链接
+  field: site  #生效范围(site:网站|post:文章)
+  exclude: ''  #需要排除的域名
+filename_case: 0        #把文件名称转换为(1)小写或(2)大写
+render_drafts: false    #渲染草稿 
+post_asset_folder: true #启用Asset文件夹
+relative_link: false    #把链接改为与根目录的相对地址 
+future: true            #显示未来的文章
+#代码设置
+highlight:
+  enable: true 
+  line_number: true    #显示行号
+  auto_detect: false   #自动检测代码语言
+  tab_replace: ''      #tab替换
+  wrap: true           #将代码块包装在<table>
+  hljs: false          #对CSS类使用hljs-*前缀
+prismjs:
+  enable: false
+  preprocess: true
+  line_number: true
+  tab_replace: ''
+
+
+############## 主页设置(Home page setting)  ##############
+#Hexo的索引生成器
+## 它会根据主题的index或archive布局在您的主页上生成帖子的存档。
+## Plugin: https://github.com/hexojs/hexo-generator-index
+## 在Front-matter里添加 sticky: Num  ，数字越大越置顶
+##     path: 你的博客索引页根路径(默认 '')
+## per_page: 每页显示文章数量(0 禁用分页) 
+## order_by: 文章排序(默认为按日期降序)
+## pagination_dir: 分页目录
+index_generator:
+  path: ''
+  per_page: 4    #(无效)值来自 per_page
+  order_by: -date
+
+############## 分类和标签(Category & Tag) ##############
+#默认分类
+default_category: default
+#分类映射
+## KEY: VALUE
+## KEY是显示名称，VALUE是URL路径
+## 在Front-matter里，Key可用于分类，链接会转换为Value。
+## 标签同理
+category_map:
+    综合: Common
+    开发: Dev
+    个人: Per
+#标签映射
+tag_map:
+
+#分类生成
+## 注: 已由 HEXO-abbrlink 插件实现,此处配置保持 false
+## 按文件夹路径自动生成类别
+## Plugin: https://github.com/xu-song/hexo-auto-category
+##   depth: 你想生成目录树的深度，应 > 0 
+auto_category:
+ enable: false
+ depth: 3
+
+
+############## 元数据元素(Metadata elements) ##############
+## false时Hexo不会在头部插入meta标签
+## See:https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta
+meta_generator: true
+
+############## 日期/时间格式(Date/Time format) ##############
+## Hexo 使用 Moment.js 来解析和显示时间
+## 你可以自定义日期格式在如下所定义范围内
+## http://momentjs.com/docs/#/displaying/format/
+date_format: YYYY-MM-DD
+time_format: HH:mm:ss
+## 文章的更新日期，除非在front-matter中设置
+## mtime: 使用文件的最后修改时间 
+##  date: 使用 date 作为 updated 的值
+## empty: 直接删除 updated
+updated_option: 'mtime'
+
+
+############## 索引和分页(Index & Pagination) ##############
+## per_page: 每页显示文章数量(0 = 禁用分页)
+## pagination_dir: 分页目录
+per_page: 10
+pagination_dir: page
+
+   
+############## 包含/排除文件(Include/Exclude file(s)) ############## 
+## include:/exclude: 选项只应用到 'source/' 文件夹
+include:  
+exclude:
+ignore:
+
+############## 部署(Deployment) ##############
+#Git部署
+## Plugin: https://github.com/hexojs/hexo-deployer-git
+## Docs: https://hexo.io/zh-cn/docs/one-command-deployment
+## 工作原理:
+## 在.deploy_git目录中生成站点,并强制推送到Repo。
+## 如果.deploy_git不存在,将初始化(git init)一个Repo,否则将使用当前Repo及其提交历史记录。
+##
+## 删除.deploy_git目录:  rm -rf  .deploy_git
+##
+#[URL类型]
+#HTTPS: https://github.com/<user>/<project>.git
+#  SSH: git@github.com:<user>/<project>.git
+#[单仓库模式]
+#deploy:
+#  type: git
+#  repo: <repository url>
+#  branch: [branch]
+#  token: ''
+#  message: [message] #默认 "Site updated: {{ now('YYYY-MM-DD HH:mm:ss') }}"
+#  name: [git user]   #提交者
+#  email: [git email] #提交者电子邮件
+#[多仓库模式]
+#deploy:
+#  type: git
+#  repo:
+#    [repo name]:
+#      url: <repository url>
+#      branch: [branch]
+#      ... ...
+#[示例]
+#deploy: 
+# type: git
+# repo: 
+#   Github1: 
+#     url: https://github.com/XXX/xx.git
+#     branch: master
+#     message: "Site updated: {{ now('YYYY-MM-DD HH:mm:ss') }}"
+#     name: XXX
+#     email: XXX@163.com
+#   Github2:
+#     url: https://github.com/YYY/yy.git
+#     branch: master
+#     message: Site updated:{{ now('YYYY-MM-DD HH:mm:ss') }}
+#     name: YYY
+#     email: YYY@163.com
+ #搜索引擎推送 https://github.com/cjh0613/hexo-submit-urls-to-search-engine
+ #type: cjh_google_url_submitter
+ #type: cjh_bing_url_submitter
+ #type: cjh_baidu_url_submitter
+  
+############################ 扩展(Extensions) ############################ 
+## Plugins: https://hexo.io/plugins/
+##  Themes: https://hexo.io/themes/
+
+#当前主题
+#landscape | next
+theme: {THEME}
+
+#-------------- Admin --------------  
+#Hexo的管理界面
+## Plugin: https://github.com/jaredly/hexo-admin
+## 访问 http://localhost:4000/admin/
+admin:
+  username: admin
+  #(admin) See: http://localhost:4000/admin/#/auth-setup
+  password_hash: $2a$10$LHKt8gyDQ34WoyLM.AMe2Oql5rd3GmRnfJERhG1SWmNu7gNVMK8RO
+  secret: kdsfjsdklfj
+#自定义帖子元数据
+#metadata:
+#  author_id: 
+#  language: 
+
+#-------------- Feed --------------
+## 生成Atom 1.0或RSS 2.0 feed。
+## Plugin: https://github.com/hexojs/hexo-generator-feed
+feed: 
+  enable: true
+  #类型(atom | rss2 | ['atom', 'rss2'])
+  type: 
+    - atom
+    - rss2
+  #路径(遵循type值的顺序)
+  path: 
+    - atom.xml
+    - rss2.xml
+  #最大帖子数
+  limit: 20
+  hub: 
+  #(可选)true,在feed中包含整个帖子的内容。
+  content: true
+  #(可选)feed中使用的帖子内容的默认长度。仅在content设置为false且不存在自定义文章摘要时使用。
+  content_limit: 140
+  #(可选)如果content_limit用于缩短文章内容,则在达到字符限制之前,仅在最后一次出现此分隔符时剪切。默认情况下不使用。
+  content_limit_delim: ' '
+  #排序
+  order_by: -date
+  #(可选)自定义feed图标
+  icon:  
+  #添加feed自动发现
+  autodiscovery: true
+  #feed模版
+  template: 
+
+#-------------- JSON --------------
+#JSON内容数据
+## 生成包含文章和页面的内容的JSON文件
+## Plugin: https://github.com/alexbruno/hexo-generator-json-content
+## 默认情况下，JSON输出包括meta，pages和posts段。如果仅启用部分，则只输出部分内容。
+jsonContent:
+  #文件名
+  file: content.json
+  #从摘录中提取关键字
+  keywords: 
+  #日期格式(See:https://momentjs.com/docs/#/displaying/format/)
+  #设置datetime对象date和updated的输出格式
+  dateFormat: 
+  #处理元数据
+  meta: true
+  #处理草稿
+  drafts: false
+  #处理文章
+  posts:
+    title: true
+    slug: true
+    date: true
+    updated: true
+    comments: true
+    path: true
+    link: true
+    permalink: true
+    excerpt: true
+    keywords: false   #从摘录中提取关键字。false,忽略根节点的keywords 
+    text: true
+    raw: false        #包含原始MD内容
+    content: true     #包含完整HTML内容 
+    author: true
+    categories: true
+    tags: true  
+  #处理页面
+  pages:
+    title: true
+    slug: true
+    date: true
+    updated: true
+    comments: true
+    path: true
+    link: true
+    permalink: true
+    excerpt: true
+    keywords: false
+    text: true
+    raw: false
+    content: true
+    author: true
+
+#Restful API
+## Plugin: https://github.com/yscoder/hexo-generator-restful
+## 生成Restful风格的json数据，可以当作API接口，API使用参阅 Plugin
+## 属性值为 false 表示不生成
+restful:
+  #输出站点配置
+  #hexo.config 混合 theme.config 
+  #true或false，也可配置为数组，选择性生成某些属性，如
+  #site: ['title', 'subtitle', 'description', 'author', 'since', email', 'favicon', 'avatar']  
+  site: ['title', 'subtitle', 'description', 'author', 'since', email', 'favicon', 'keywords', 'language', 'timezone', 'theme']
+  #文章列表分页，0表示不分页
+  posts_size: 10    
+  #文章列表项的需要生成的属性
+  posts_props:      
+    title: true
+    slug: true
+    date: true
+    updated: true
+    comments: true
+    path: true
+    excerpt: true
+    cover: true            #封面图，取文章第一张图片
+    content: true
+    keywords: false
+    categories: true
+    tags: true
+  categories: true         #分类数据
+  use_category_slug: false #使用slug作为类别数据的文件名
+  tags: true               #标签数据
+  use_tag_slug: false      #使用slug作为标签数据的文件名
+  post: true               #文章数据
+  #额外的Hexo页面数据, 如 About
+  pages: true
+  #排除页面，如 lib
+  pages_exclude: 
+    - lib
+    - images
+    - Test
+    - css
+    - js
+
+
+#-------------- 搜索 -------------- 
+#搜索数据生成
+## Plugin: https://github.com/wzpan/hexo-generator-search
+## 特定文件排除:在Front-matter里添加 indexing: false
+search:
+  #路径。文件扩展名决定输出类型(.json:JSON类型 | XML类型)
+  path: search.json
+  #搜索范围(post | page | all)
+  field: post
+  #是否包含每一篇文章的全部内容
+  content: true
+
+#-------------- SEO -------------- 
+#站点地图  
+## Plugin: https://github.com/hexojs/hexo-generator-sitemap
+## 特定文件排除:在Front-matter里添加 sitemap: false
+sitemap:
+  #路径
+  path: sitemap.xml
+  #自定义模板
+  template: 
+  #将rel-sitemap添加到站点头
+  rel: false
+  #是否排除Tags
+  tags: true
+  #是否排除Categories
+  categories: true
+
+#外部链接nofollow
+## Plugin: https://github.com/hexojs/hexo-filter-nofollow
+## 将nofollow属性自动添加到所有外部链接。
+nofollow:
+  enable: true
+  #有效范围(site | post)
+  field: site
+  #排除主机名(不适用通配符)
+  exclude: 
+    #- 'exclude1.com'
+
+#推送新链接至搜索引擎
+## Plugin: https://github.com/cjh0613/hexo-submit-urls-to-search-engine
+## 如下部分选项支持环境变量(ENV)
+hexo_submit_urls_to_search_engine:
+  #链接被提交的条件(count | period)仅支持count
+  submit_condition: count 
+  #提交最新的N个链接
+  count: 10 
+  #提交修改时间在指定秒内的链接
+  period: 900 
+  #是否向Google提交(0:否|1:是)
+  google: 0 
+  #是否向bing提交(0:否|1:是)
+  bing: 0 
+  #是否向baidu提交(0:否|1:是)
+  baidu: 0 
+  #保存推送链接的文件
+  txt_path: submit_urls.txt
+  #在百度站长平台中注册的域名
+  baidu_host: https://XXX.github.io 
+  #百度秘钥(请不要把它直接发布在公众仓库里) ENV: BAIDU_TOKEN
+  baidu_token:  
+  #在bing站长平台中注册的域名
+  bing_host: https://XXX.github.io 
+  #bing秘钥(请不要把它直接发布在公众仓库里) ENV: BING_TOKEN
+  bing_token: 
+  #在google站长平台中注册的域名
+  google_host: https://XXX.github.io 
+  #存放google key的json文件,放于网站根目录(请不要把它直接发布在公众仓库里)
+  google_key_file: Project.json 
+  #是否替换链接中的部分字符串(0:否|1:是)
+  replace: 0  
+  find_what: http://xxx.github.io/blog
+  replace_with: https://xxx.com
+
+
+#-------------- 性能优化 --------------  
+#懒加载图像
+## Plugin: https://github.com/Troy-Yang/hexo-lazyload-image
+lazyload:
+  enable: true
+  #(可选)只处理文章
+  #true,则只有来自post或page的图像将支持延迟加载。
+  #false,站点的整个图像将使用延迟加载，包括来自主题的图像，但不包括来自CSS样式的背景图像。
+  onlypost: true
+  #(可选)加载过程的图像。如 ./images/loading.gif
+  loadingImg: 
+  #(可选)兼容SPA页面
+  #true,则在滚动过程中搜索每个图像以支持SPA页面
+  #false(默认),则性能将最佳。
+  isSPA: true  
+
+#优化HTML，CSS，JS和images
+## Plugin: https://github.com/chenzhutian/hexo-all-minifier
+#启用所有优化
+#all_minifier: false
+#js捆绑 
+js_concator:
+  enable: false
+  #捆绑脚本的输出路径。它将被设置为根目录的绝对路径。
+  bundle_path: '/js/bundle.js'
+  #将捆绑脚本放在body标记中所有脚本的前面。
+  front: false
+  #是否禁用日志输出。
+  silent: false
+#优化HTML
+html_minifier:
+  enable: false
+  #忽略解析html时发生的错误。
+  ignore_error: true
+  #是否禁用日志输出。
+  silent: false
+  #排除文件
+  exclude: 
+
+#优化CSS
+css_minifier:
+  enable: true
+  #是否禁用日志输出。
+  silent: false
+  #排除文件
+  exclude: 
+    - '*.min.css'
+#优化JS
+js_minifier:
+  enable: true
+  #撕裂文件名
+  mangle: false
+  #是否禁用日志输出。
+  silent: false
+  #输出。如果为空，请注释或设置为null
+  #output:
+  #压缩。如果为空，请注释或设置为null
+  #compress:
+  #排除文件
+  exclude: 
+    - '*.min.js'	
+#优化Images(Bug: Error: '"Z:\...\node_modules\gifsicle\vendor\gifsicle.exe"' )
+image_minifier:
+  enable: false
+  #交错gif进行渐进式渲染
+  interlaced: false
+  #多次优化svg，直到完全优化。
+  multipass: false
+  #选择0和7之间的优化级别。
+  optimizationLevel: 2
+  #启用 imagemin-pngquant  插件。See:https://github.com/imagemin/imagemin-pngquant
+  pngquant: false
+  #无损转换为渐进式。 
+  progressive: true
+  #是否禁用日志输出。
+  silent: false
+  #排除特定类型的图像文件(gif，jpg，png，svg)。默认为空。不支持Glob
+  exclude:  
+
+
+#-------------- 字数统计设置 --------------  
+#字符统计和阅读时间
+## Plugin: https://github.com/theme-next/hexo-symbols-count-time
+symbols_count_time:
+  symbols: true
+  time: true
+  #字符总数
+  total_symbols: true
+  #阅读总时长
+  total_time: true
+  #不计算代码块
+  exclude_codeblock: true
+  #平均单词长度(单词中的字符数)。 CN ~ 2; EN ~ 5; RU ~ 6
+  awl: 2
+  #每分钟单词数。慢~200;正常~275;快~350
+  wpm: 300
+  #如果阅读时间小于60分钟，则添加后缀作为字符串参数。
+  suffix: "mins."
+
+#-------------- 阅读更多 --------------  
+#文章摘录
+## Plugin: https://github.com/chekun/hexo-excerpt
+excerpt:
+  # 深度:指定摘录的大小(非空白行数量)。
+  depth: 3
+  # 摘录排除(css选择器)
+  excerpt_excludes: []
+  more_excludes: []
+  # true : 不显示短帖子的摘要
+  hideWholePostExcerpts: false
+
+
+#-------------- 图像和表格 --------------
+
+ 
+#-------------- 视频和音频 --------------
+#视频
+## Plugin: https://github.com/m80126colin/hexo-tag-owl
+## 嵌入各种视频和图像源到文章中。
+## Markdown语法:
+##    See: doc/Use.md
+owl:
+  #CSS类型(default:lib/asset/css.styl|custom:file|none)
+  css: default
+  #CSS文件(default:lib/asset/css.styl输出到此文件|custom:提供此文件)
+  file: css/owl.css
+
+
+#音频
+## Plugin: https://github.com/MoePlayer/hexo-tag-aplayer
+## Markdown语法:
+##    See: doc/Use.md
+aplayer:
+  # Public 目录下脚本目录路径，默认: 'assets/js'
+  script_dir: js
+  # Public 目录下样式目录路径，默认: 'assets/css'
+  style_dir: css
+  # 引用 APlayer.js 外部 CDN 地址(默认不开启)
+  #cdn: https://unpkg.com/browse/aplayer@1.10.1/dist/APlayer.min.js
+  #cdn: https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.js
+  #cdn: https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js
+  # 引用 APlayer.css 外部 CDN 地址(默认不开启)
+  #style_cdn: https://unpkg.com/browse/aplayer@1.10.1/dist/APlayer.min.css
+  #style_cdn: https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.css
+  #style_cdn: https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css
+  # 启用MetingJS支持
+  meting: true                                  
+  # 自定义 Meting API 地址，如 http://xxx/api.php 
+  meting_api:                
+  # 引用 Meting.js 外部 CDN 地址(默认不开启)
+  #meting_cdn: https://unpkg.com/meting@2.0.1/dist/Meting.min.js
+  #meting_cdn: https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js
+  # 自动插入 Aplayer.js 与 Meting.js 资源脚本
+  asset_inject: true                            
+  # 老版本参数，与 cdn 相同
+  #externalLink: http://xxx/aplayer.min.js       
+
+
+#-------------- 内容集成 --------------
+#bilibili页面
+## Plugin: https://github.com/HCLonely/hexo-bilibili-bangumi
+## 添加哔哩哔哩番剧页面(个人的追番信息)
+## 如下命令在hexo generate或hexo deploy之前使用
+## 更新数据: hexo bangumi -u
+## 删除数据: hexo bangumi -d
+## 注: 需要将追番列表设置为公开
+bangumi:
+  enable: false
+  #番剧页面路径,默认: bangumis/index.html
+  path: bangumis/index.html
+  #用户ID
+  vmid: 
+  #页面标题
+  title: '追番列表'
+  #页面导语,支持html语法
+  quote: '生命不息，追番不止！'
+  #初始显示页面(0:想看 | 1:在看<默认> | 2:看过)
+  show: 1
+  #图片加载完成前的loading图片
+  loading: 
+  #meta部分(简介上方)字体颜色
+  metaColor: "#00a1d6"
+  #简介字体颜色
+  color: "#4c4948"
+  #番剧封面使用webp格式
+  webp: true
+
+
+#-------------- 渲染引擎 --------------
+#渲染引擎hexo-renderer-markdown-it
+## Plugin: https://github.com/hexojs/hexo-renderer-markdown-it
+## Doc: https://github.com/celsomiranda/hexo-renderer-markdown-it/wiki/ 
+## 比默认渲染器 hexo-renderer-marked更快
+##   
+#markdown: 'zero'        #仅支持斜体和粗体,禁用大多数功能 
+#markdown: 'default'     #使解析器的行为类似于github规范。
+#markdown: 'commonmark'  #使解析器使用CommonMark规范。
+markdown:
+  #渲染
+  render:
+    html: true           #是否应转义源中的html内容(true:不转义|false:转义)
+    xhtmlOut: true       #是否导出完全兼容XHTML的标记。只有在CommonMark完全支持时才需要这样做。
+    breaks: false        #是否解析源文件中的make换行符为<br>标记。false,仍然支持默认的双换行创建段落
+    linkify: true        #是否将URL文本转换为链接
+    typographer: true    #是否替换常见的排版元素,如花引号、破折号等。
+    quotes: '“”‘’'       #定义要使用的双引号和单引号,当 typographer为true时替换为这些引号
+  #插件
+  plugins:
+    - markdown-it-abbr
+    - markdown-it-footnote
+    - markdown-it-ins
+    - markdown-it-sub
+    - markdown-it-sup
+  #锚
+  anchors:
+    #创建ID的最低级别(例如h2到h6)
+    level: 2
+    #如果ID重复，则在给定的数字前面加上此后缀(title-2 => title-v2)
+    collisionSuffix: 'v'
+    #true,在标题旁边创建一个带有永久链接的定位标记。
+    permalink: true
+    #用于永久链接定位标记的类名
+    permalinkClass: 'header-anchor'
+    #永久链接的位置(right|left)
+    permalinkSide: 'right'
+    #用于生成永久链接的符号 '¶'
+    permalinkSymbol: '#'
+    #将锚点转换为(1:小写|2:大写)
+    case: 0
+    #用字符替换空格
+    separator: ''
+
+
+#-------------- 流程图支持 --------------
+## markdown 流程图支持 gantt,mermaid,flow,plantUML 等类型的语法
+## 默认情况下,Hexo是无法渲染这些流程图的，需要安装相应的插件。
+
+#流程图flowchart
+## Plugin: https://github.com/bubkoo/hexo-filter-flowchart
+## Markdown示例:
+##   See: doc/Use.md
+flowchart:
+  #raphael:    #可选,自定义 raphael.js
+  #flowchart:  #可选,自定义 flowchart.js
+  options:     #用于`drawSVG`的选项 
+    scale: 1
+    line-width: 2
+    line-length: 50
+    text-margin: 10
+    font-size: 12
+
+#UML图sequence
+## Plugin: https://github.com/bubkoo/hexo-filter-sequence
+## Markdown示例:
+##   See: doc/Use.md
+sequence:
+  #webfont:     #可选,自定义 webfontloader.js
+  #snap:        #可选,自定义 snap.svg.js
+  #underscore:  #可选,自定义 underscore.js
+  #sequence:    #可选,自定义 sequence-diagram.js
+  #css:         #可选,css的url,例如 hand drawn theme 
+  options: 
+    theme: 
+    css_class: 
+
+
+#-------------- 工具提示 --------------
+#脚注提示
+## Plugin: https://github.com/kchen0x/hexo-reference
+## 支持markdown脚注和Wiki-Style的工具提示
+## Markdown语法:
+##   See: doc/Use.md
+
+#-------------- 数学公式支持 --------------
+
+
+#-------------- 其它 --------------    
+#博文置顶
+## 在Front-matter里添加 top: Num  ，数字越大越置顶
+## Plugin: https://github.com/amlove2/hexo-generator-topindex
+## per_page: 每页显示文章数量(0 = 禁用分页)
+## order_by: 文章排序(默认为按日期降序)
+topindex_generator:
+  per_page: 8    #在首页生效
+  order_by: -date
+

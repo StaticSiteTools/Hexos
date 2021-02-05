@@ -1,0 +1,101 @@
+#!/bin/bash
+
+##########################################################
+#
+# hexos 初始化
+# 
+# 执行环境: Linux
+# 调用方式: ./  source  
+# 调用参数: 			 		 	  				  
+#     	     $1:   工作根目录	      	  
+#     	   [$2]:   语言(en|cn<默认>)     	  
+#     	   [$3]:   主题(next<默认>|)     	  
+#     	   [$4]:   作者
+##########################################################
+#$(cd $(dirname $0); pwd) : 当前脚本所在路径(/.../dirname)
+#批量替换并输出到新文件
+#sed  's/Old_1/New_1/g;s/Old_2/New_2/g'   filename>destfile  
+
+# ================================================== 
+# 函数名称: Init_Copy			 					  	 
+# 函数功能: 	  	  							 
+# 函数参数: 			 		 	  				 
+#     		 $1:   源				      	 
+#     	     $2:   目标			      	 
+#     	   [$3]:   sed表达式字符串			     	   
+# 			 									 	 
+# 返回值:  									 	  
+# 		$?: 获取调用结果(调用后立即使用)							  
+# 		    0: 执行成功							 	
+# 		    1: 执行失败								 	
+# 			 									 	  						  
+# ================================================== 
+function Init_Copy()
+{		
+    #设置局部变量
+	local InitCopy_Source="$1"
+	local InitCopy_Dest="$2"
+	local InitCopy_SedStr="${3:-}"
+	local InitCopy_DestDir="`dirname ${InitCopy_Dest}`"
+	
+	if [ -e "${InitCopy_Source}" ]; then
+        #源文件存在
+        if [ -e "${InitCopy_Dest}" ]; then
+            #目标文件存在，备份
+			if [ -e "${InitCopy_Dest}.original" ]; then
+				mv -f "${InitCopy_Dest}"  "${InitCopy_Dest}.`date +%s`"			
+			else			
+				mv -f "${InitCopy_Dest}"  "${InitCopy_Dest}.original"			
+			fi
+        fi
+		#目标路径不存在，则创建
+		if [ ! -d "${InitCopy_DestDir}" ]; then
+			mkdir -p  "${InitCopy_DestDir}"
+		fi
+		(
+			#批量替换并输出到新文件
+			sed  "${InitCopy_SedStr}"   "${InitCopy_Source}">"${InitCopy_Dest}"
+		) && (
+			[ "${Init_Lang}" == "cn" ] && echo -e "\033[32m[Init:输出文件]${InitCopy_Dest}, 请根据实际需求配置此文件。\033[0m"
+			[ "${Init_Lang}" == "en" ] && echo -e "\033[32m[Init:Out File]${InitCopy_Dest}, Please configure this file according to the actual needs.\033[0m"
+		)
+    else
+        #源文件不存在
+        [ "${Init_Lang}" == "cn" ] && echo -e "\033[31m[Init:文件不存在]${InitCopy_Source}\033[0m"
+        [ "${Init_Lang}" == "en" ] && echo -e "\033[31m[Init:File not exist]${InitCopy_Source}\033[0m"
+    fi
+	
+	return 0
+}
+##### 函数测试 #####
+#  Init_Copy  "${Source}" "${Dest}"  ""
+
+
+Init_WorkDir="${1}"
+Init_Lang="${2:-cn}"
+Init_Theme="${3:-next}"
+Init_Author="${4:-Jone}"
+
+Init_SourceSiteConf="_Scripts/Resources/_config.${Init_Lang}.yml.sample"
+Init_DestSiteConf="_config.yml"
+Init_SourceThemeConf="_Scripts/Resources/themes/${Init_Theme}/_config.${Init_Lang}.yml.sample"
+Init_DestThemeConf="themes/${Init_Theme}/_config.yml"
+Init_SourceTravisConf="_Scripts/Resources/.travis.${Init_Lang}.yml.sample"
+Init_DestTravisConf=".travis.yml"
+Init_SourceGitHubActionsConf="_Scripts/Resources/GitHubActions.${Init_Lang}.yml.sample"
+Init_DestGitHubActionsConf=".github/workflows/GitHubActions.yml.sample"
+Init_Source_md="_Scripts/Resources/source/${Init_Lang}"
+Init_Dest_md="source/"
+
+( 
+    cd  "${Init_WorkDir}" 
+    
+	Init_Copy  "${Init_SourceSiteConf}" "${Init_DestSiteConf}"  "s/{AUTHOR}/${Init_Author}/g;s/{THEME}/${Init_Theme}/g"
+	Init_Copy  "${Init_SourceThemeConf}" "${Init_DestThemeConf}"  ""
+	Init_Copy  "${Init_SourceTravisConf}" "${Init_DestTravisConf}"  ""
+	Init_Copy  "${Init_SourceGitHubActionsConf}" "${Init_DestGitHubActionsConf}"  ""
+	cp -rf "${Init_Source_md}/"*  "${Init_Dest_md}"	
+	
+)
+
+

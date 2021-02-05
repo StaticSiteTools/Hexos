@@ -1,0 +1,107 @@
+#===========================================================
+# Hexos Actions
+##    Ver: 1.0.0
+##   Date: 2020-11-20 10:24:48
+##   Docs: https://docs.github.com/en/free-pro-team@latest/actions
+#===========================================================
+name: Hexos CI/CD
+
+# 触发条件：在 push 到 master 分支后
+on:
+  push:
+    branches: 
+      - master
+
+# 环境变量
+env:
+  TZ: Asia/Shanghai
+  HEXOS_U_NAME: XXX
+  HEXOS_U_EMAIL: XXX@163.com
+  HEXOS_GITHUB_REF: github.com/XX/XX.github.io.git    
+  HEXOS_GITHUB_BRANCH: master
+  HEXOS_GITEE_REF: gitee.com/XX/XX.gitee.io.git
+  HEXOS_GITEE_BRANCH: master
+  HEXOS_CODING_REF: e.coding.net/XX/XX.coding.io.git
+  HEXOS_CODING_BRANCH: master
+  #HEXOS_NOTICE_EMAIL: XXX@163.com  
+  #HEXOS_WATCH_BRANCH: master
+
+jobs:
+  Hexos-cicd:
+    name: Hexos 构建和部署
+    runs-on: ubuntu-latest 
+
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v2
+      with:
+        #是否下载Git-LFS文件(true|false)
+        lfs: 'true'
+        #是否检出子模块(true:检出|recursive:递归检出)
+        submodules: 'true'
+
+    - name: 安装Node.js环境
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+
+      # 设置包缓存目录，避免每次下载
+    - name: 缓存Node.js模块
+      uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+      # 下载 hexo-cli 脚手架及相关安装包
+    - name: 安装Hexo
+      run: |
+        npm install -g hexo-cli
+        chmod u+x Start
+        ./Start  install
+        ./Start  patch
+
+      # 编译 markdown 文件
+    - name: 生成文件
+      run: |
+        hexo clean
+        hexo generate
+
+      # Public存储库预处理
+    - name: 初始化Public存储库   
+      run: |        
+        cp -f .gitattributes  public/
+        cd ./public && git init && git lfs install
+        git config lfs.allowincompletepush true
+        git config user.name "${HEXOS_U_NAME}"
+        git config user.email "${HEXOS_U_EMAIL}"
+        git config http.postBuffer  524288000
+        git add .
+        git commit -m "GitHub Actions 自动构建在 `date +"%Y-%m-%d %H:%M"`"
+
+      # 将编译后的文件推送到指定仓库
+    - name: 部署Hexos到GITHUB
+      continue-on-error: true
+      run: |  
+        cd ./public
+        git push --force --quiet "https://${{ secrets.HEXOS_GITHUB_TOKEN }}@${HEXOS_GITHUB_REF}" master:${HEXOS_GITHUB_BRANCH}
+#     - name: 部署Hexos到CODING
+#       continue-on-error: true
+#       run: |  
+#         cd ./public
+#         git push --force --quiet "https://${{ secrets.HEXOS_CODING_PROJECT_USER }}:${{ secrets.HEXOS_CODING_PROJECT_TOKEN }}@${HEXOS_CODING_REF}" master:${HEXOS_CODING_BRANCH}  
+#     - name: 部署Hexos到GITEE
+#       continue-on-error: true
+#       run: |  
+##         rm -rf public/.git
+##         rm -f public/.gitattributes
+##         git init public/
+##         git config -f public/.git/config  user.name "${HEXOS_U_NAME}"
+##         git config -f public/.git/config  user.email "${HEXOS_U_EMAIL}"
+##         git config -f public/.git/config  http.postBuffer  524288000
+##         ( cd ./public && git add . && git commit -m "GitHub Actions 自动构建在 `date +"%Y-%m-%d %H:%M"`" )
+#         cd ./public
+#         git push --force --quiet "https://${{ secrets.HEXOS_GITEE_USER }}:${{ secrets.HEXOS_GITEE_TOKEN }}@${HEXOS_GITEE_REF}" master:${HEXOS_GITEE_BRANCH}
+            
+        

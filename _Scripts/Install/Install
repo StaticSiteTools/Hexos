@@ -1,0 +1,35 @@
+#!/bin/bash
+
+##########################################################
+#
+# hexos 安装
+# 
+# 执行环境: Linux
+# 调用方式: ./  source  
+# 调用参数: 			 		 	  				  
+#     	     $1:   工作根目录
+##########################################################
+# 脚本名称
+Install_SCRIPT_NAME=${BASH_SOURCE[0]##*/}
+# 脚本所在目录
+# BASH_SOURCE[0]: 存储脚本的名称，如 funlist/a/bc.sh
+# 注: 只适用于bash shell，不会改变cd目录
+#     SCRIPT_DIR=$(cd $(dirname $0); pwd)  #不准确# $0不同方式调用结果不同
+## OK # ./XXX.sh 	  :  /mnt/f_DockerData/scripts
+## OK # source XXX.sh :  /mnt/f_DockerData/scripts
+## OK # bash XXX.sh	  :  /mnt/f_DockerData/scripts
+## NO # sh XXX.sh	  :  Error
+Install_SCRIPT_DIR="$(cd $(dirname ${BASH_SOURCE[0]}); pwd)"
+
+Install_WorkDir="${1}"
+Install_List="${Install_SCRIPT_DIR}/InstallList"
+#Install_List="${Install_SCRIPT_DIR}/test"
+( 
+echo 
+echo '------[Install:Start]---------------------------------------------------------------------'
+cd  "${Install_WorkDir}" 
+#. ${Install_List}
+source ${Install_List}
+echo '------[Install:End]-----------------------------------------------------------------------'
+echo
+)
