@@ -27,7 +27,7 @@ hexos
 * [x] Init配置更正(如，*.yml.test => *.yml)
 * [x] Readme.md 完善
 * [x] Readme.md en  完善
-* [ ] 配置文件删除
+* [x] 配置文件删除
 
 
 
